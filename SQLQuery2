@@ -1,0 +1,83 @@
+use hastaneveritabani
+--------------------------
+--günün tarihi?
+--SELECT GETDATE()  
+--select day(GETDATE())
+--select month(GETDATE())
+--select year(GETDATE())
+--SELECT * FROM Patients
+--SELECT * FROM Rooms
+--Hastaların ad,soyad,doğum tarihi ve yaşlarını raporla?
+--SELECT FirstName, LastName, DateOfBirth,DATEDIFF(YEAR, DateOfBirth, GETDATE()) FROM Patients
+--50 yaşın üzerindeki hastları raporla?
+--SELECT *FROM Patients WHERE DATEDIFF(YEAR, DateOfBirth, GETDATE()) > 50
+--hastanedeki doktorların adı, soyadı ve alanını raporla?
+--SELECT FirstName + ' ' + LastName, Specialization FROM Doctors
+--SELECT * FROM Doctors WHERE Specialization = 'Kardiyoloji'
+--sisteme en son eklenen 1 doktoru raporla
+--SELECT TOP 1 * FROM Doctors ORDER BY DoctorID DESC
+--personellerin adı,soyadı ve görevlerini raporlayınız?
+--SELECT FirstName + ' ' + LastName, Role FROM Staff
+--Randevusu olmayan doktorları raporla
+--SELECT * FROM Doctors WHERE DoctorID NOT IN (SELECT DISTINCT DoctorID FROM Appointments)
+--Herhangi bi hastanın tüm randevularını raporla
+--SELECT * FROM Appointments WHERE PatientID = 2 
+--bekleyen randevuları raporla
+--SELECT * FROM Appointments WHERE Status = 'Beklemede'
+--iptal edilen randevuları raporla
+--SELECT * FROM Appointments WHERE Status = 'İptal Edildi'
+--tüm hastaların en son ziyaret tarihlerini raporla
+--SELECT p.PatientID, p.FirstName + ' ' + p.LastName, MAX(m.VisitDate) FROM MedicalRecords m JOIN Patients p ON m.PatientID = p.PatientID GROUP BY p.PatientID, p.FirstName, p.LastName
+--her bir doktor üzerine yazılan reçetelerin satyısını rporla
+--SELECT d.DoctorID, d.FirstName + ' ' + d.LastName, COUNT(p.PrescriptionID)FROM Doctors d LEFT JOIN Prescriptions p ON d.DoctorID = p.DoctorIDGROUP BY d.DoctorID, d.FirstName, d.LastName
+--boş odaları rporla
+--SELECT * FROM Rooms WHERE Status = 'Boş'
+--randevusu olmayan hastaları raporla
+--SELECT * FROM Patients WHERE PatientID NOT IN (SELECT DISTINCT PatientID FROM Appointments)
+--en son randevu alan hasta
+--SELECT TOP 1 * FROM Appointments ORDER BY AppointmentDate DESC
+--kadın doğum doktorlarını listele
+--SELECT * FROM Doctors WHERE Specialization = 'Kadın doğum'
+--hastaalrın kan gruplarına göre sayısını raporla
+--SELECT BloodType, COUNT(PatientID) FROM Patients GROUP BY BloodType
+--her bir doktorun kaç tane hastya reçete yazdığını raporla
+--SELECT DoctorID, COUNT(PrescriptionID) FROM Prescriptions GROUP BY DoctorID
+--en sık yapılan test türü raporla
+--SELECT TOP 1 TestType, COUNT(TestID) FROM Tests GROUP BY TestType ORDER BY COUNT(TestID) DESC
+--hastaların kaç tane tıbbi olarak kaydı olduğunu raporla 
+--SELECT p.PatientID, p.FirstName + ' ' + p.LastName, p.DateOfBirth, p.Gender, p.Phone, p.BloodType, COUNT(m.RecordID) FROM MedicalRecords m JOIN Patients p ON m.PatientID = p.PatientID GROUP BY p.PatientID, p.FirstName, p.LastName, p.DateOfBirth, p.Gender,  p.Phone,  p.BloodType
+--tüm doktorların e posta adresini görüntüle
+--SELECT Email, RIGHT(Email, CHARINDEX('@', REVERSE(Email)) - 1) FROM Doctors
+--0216 ile başlayan telefon numarasına sahip doktorları raporla
+--SELECT *FROM Doctors WHERE Phone LIKE '0216%'
+--Telefon numarasında 0 olanları raporla
+--SELECT *FROM Patients WHERE Phone LIKE '%0%'
+--Telefon numarasında 2 olanları raporla
+--SELECT *FROM Patients WHERE Phone LIKE '%2%'
+--2024 yılında yazılan reçeteleri raporla
+--SELECT *FROM Prescriptions WHERE YEAR(StartDate) = 2024
+--2024 yılında kullanılan oda ve randevu sayılarını raporla
+--SELECT RoomID, COUNT(AppointmentID) FROM Appointments WHERE YEAR(AppointmentDate) = 2024 GROUP BY RoomID ORDER BY COUNT(AppointmentID) DESC
+--randevu sayısına göre en yoğun günleri raporla
+--SELECT AppointmentDate, COUNT(AppointmentID) FROM Appointments GROUP BY AppointmentDate ORDER BY COUNT(AppointmentID) DESC
+--randevu durumlarına göre sayılarını raporla
+--SELECT Status, COUNT(AppointmentID) FROM Appointments GROUP BY Status
+--İstanbulda yaşayan hastaları raporla
+--SELECT *FROM Patients WHERE Address LIKE '%İstanbul%'
+--her şehirde kaç hasta olduğunu raporla
+--SELECT Address, COUNT(PatientID) FROM Patients GROUP BY Address ORDER BY COUNT(PatientID) DESC
+--adres bilgisi eksik olan hastları listele
+--SELECT *FROM Patients WHERE Address IS NULL OR Address = ''
+--erkek hastaları listele
+--SELECT *FROM Patients WHERE Gender = 'Erkek'
+--kadın hastaları listele
+--SELECT *FROM Patients WHERE Gender = 'Kadın'
+--cinsiyete göre hasta sayılarını raporla
+--SELECT Gender, COUNT(PatientID) FROM Patients GROUP BY Gender
+--cinsiyete göre randevu sayısını raporla
+--SELECT p.Gender, COUNT(a.AppointmentID) FROM Patients p JOIN Appointments a ON p.PatientID = a.PatientID GROUP BY p.Gender
+--her görevde kaç personel olduğunu raporla
+--SELECT Role, COUNT(StaffID) FROM Staff GROUP BY Role ORDER BY COUNT(StaffID) DESC
+-- "05443556767" tel nosuna sahip personeli raporla
+--SELECT *FROM Staff WHERE Phone = '05443556767'
+
