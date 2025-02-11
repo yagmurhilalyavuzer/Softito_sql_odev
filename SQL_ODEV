@@ -1,0 +1,397 @@
+USE [hastaneveritabani]
+GO
+/****** Object:  Database [hastaneveritabani]    Script Date: 11/02/2025 10:24:30 pm ******/
+CREATE DATABASE [hastaneveritabani]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'hastaneveritabani', FILENAME = N'C:\ProgramData\SOLIDWORKS Electrical\MSSQL15.TEW_SQLEXPRESS\MSSQL\DATA\hastaneveritabani.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'hastaneveritabani_log', FILENAME = N'C:\ProgramData\SOLIDWORKS Electrical\MSSQL15.TEW_SQLEXPRESS\MSSQL\DATA\hastaneveritabani_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [hastaneveritabani] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [hastaneveritabani].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [hastaneveritabani] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [hastaneveritabani] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [hastaneveritabani] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [hastaneveritabani] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [hastaneveritabani] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [hastaneveritabani] SET  MULTI_USER 
+GO
+ALTER DATABASE [hastaneveritabani] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [hastaneveritabani] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [hastaneveritabani] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [hastaneveritabani] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [hastaneveritabani] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [hastaneveritabani] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [hastaneveritabani] SET QUERY_STORE = OFF
+GO
+USE [hastaneveritabani]
+GO
+/****** Object:  Table [dbo].[Appointments]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Appointments](
+	[AppointmentID] [int] IDENTITY(1,1) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+	[StaffID] [int] NULL,
+	[RoomID] [int] NULL,
+	[AppointmentDate] [datetime] NOT NULL,
+	[Status] [varchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[AppointmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Doctors]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Doctors](
+	[DoctorID] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](50) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
+	[Specialization] [varchar](100) NOT NULL,
+	[Phone] [varchar](15) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MedicalRecords]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MedicalRecords](
+	[RecordID] [int] IDENTITY(1,1) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+	[StaffID] [int] NULL,
+	[Diagnosis] [text] NOT NULL,
+	[Prescription] [text] NULL,
+	[VisitDate] [datetime] NOT NULL,
+	[Notes] [text] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[RecordID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Patients]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Patients](
+	[PatientID] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](50) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
+	[DateOfBirth] [date] NOT NULL,
+	[Gender] [varchar](10) NOT NULL,
+	[Phone] [varchar](15) NOT NULL,
+	[Address] [varchar](255) NULL,
+	[BloodType] [varchar](3) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[PatientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Prescriptions]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Prescriptions](
+	[PrescriptionID] [int] IDENTITY(1,1) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+	[MedicineName] [varchar](100) NOT NULL,
+	[Dosage] [varchar](50) NOT NULL,
+	[Frequency] [varchar](50) NOT NULL,
+	[StartDate] [date] NOT NULL,
+	[EndDate] [date] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[PrescriptionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Rooms]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Rooms](
+	[RoomID] [int] IDENTITY(1,1) NOT NULL,
+	[RoomNumber] [int] NOT NULL,
+	[Type] [varchar](50) NOT NULL,
+	[Status] [varchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[RoomID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Staff]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Staff](
+	[StaffID] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](50) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
+	[Role] [varchar](50) NOT NULL,
+	[Phone] [varchar](15) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[StaffID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Tests]    Script Date: 11/02/2025 10:24:30 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tests](
+	[TestID] [int] IDENTITY(1,1) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+	[StaffID] [int] NULL,
+	[TestType] [varchar](100) NOT NULL,
+	[TestDate] [datetime] NOT NULL,
+	[Results] [text] NULL,
+	[Status] [varchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TestID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Appointments] ON 
+
+INSERT [dbo].[Appointments] ([AppointmentID], [PatientID], [DoctorID], [StaffID], [RoomID], [AppointmentDate], [Status]) VALUES (12, 1, 1, 1, 1, CAST(N'2024-02-12T10:00:00.000' AS DateTime), N'Beklemede')
+INSERT [dbo].[Appointments] ([AppointmentID], [PatientID], [DoctorID], [StaffID], [RoomID], [AppointmentDate], [Status]) VALUES (13, 2, 2, 2, 2, CAST(N'2024-02-13T14:00:00.000' AS DateTime), N'Tamamlandı')
+INSERT [dbo].[Appointments] ([AppointmentID], [PatientID], [DoctorID], [StaffID], [RoomID], [AppointmentDate], [Status]) VALUES (14, 3, 1, 1, 1, CAST(N'2024-02-15T09:30:00.000' AS DateTime), N'İptal Edildi')
+INSERT [dbo].[Appointments] ([AppointmentID], [PatientID], [DoctorID], [StaffID], [RoomID], [AppointmentDate], [Status]) VALUES (19, 1, 1, 1, 1, CAST(N'2024-02-12T10:00:00.000' AS DateTime), N'Beklemede')
+SET IDENTITY_INSERT [dbo].[Appointments] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Doctors] ON 
+
+INSERT [dbo].[Doctors] ([DoctorID], [FirstName], [LastName], [Specialization], [Phone], [Email]) VALUES (1, N'Esmanur', N'Yavuzer', N'Kardiyoloji', N'02165553434', N'esmayavuzer@hastane.com')
+INSERT [dbo].[Doctors] ([DoctorID], [FirstName], [LastName], [Specialization], [Phone], [Email]) VALUES (2, N'Ali', N'Yılmaz', N'Dahiliye', N'02165553535', N'ali.yilmaz@hastane.com')
+INSERT [dbo].[Doctors] ([DoctorID], [FirstName], [LastName], [Specialization], [Phone], [Email]) VALUES (3, N'Meryem', N'Nil', N'Kadın doğum', N'02124565657', N'mer.nil@hastane.com')
+SET IDENTITY_INSERT [dbo].[Doctors] OFF
+GO
+SET IDENTITY_INSERT [dbo].[MedicalRecords] ON 
+
+INSERT [dbo].[MedicalRecords] ([RecordID], [PatientID], [DoctorID], [StaffID], [Diagnosis], [Prescription], [VisitDate], [Notes]) VALUES (1, 1, 1, 1, N'Hipertansiyon', N'Parol 500mg, Aspirin 100mg', CAST(N'2024-02-01T00:00:00.000' AS DateTime), N'Diyet ve düzenli egzersiz önerildi.')
+INSERT [dbo].[MedicalRecords] ([RecordID], [PatientID], [DoctorID], [StaffID], [Diagnosis], [Prescription], [VisitDate], [Notes]) VALUES (2, 2, 2, 2, N'Mide ülseri', N'Lansor 30mg', CAST(N'2024-02-05T00:00:00.000' AS DateTime), N'Hastaya mide koruyucu önerildi.')
+INSERT [dbo].[MedicalRecords] ([RecordID], [PatientID], [DoctorID], [StaffID], [Diagnosis], [Prescription], [VisitDate], [Notes]) VALUES (3, 3, 1, 3, N'Şeker hastalığı', N'Glifor 1000mg', CAST(N'2024-02-10T00:00:00.000' AS DateTime), N'Düşük şekerli diyet önerildi.')
+INSERT [dbo].[MedicalRecords] ([RecordID], [PatientID], [DoctorID], [StaffID], [Diagnosis], [Prescription], [VisitDate], [Notes]) VALUES (4, 5, 3, 1, N'Anemi', N'Demir takviyesi önerildi', CAST(N'2024-02-12T00:00:00.000' AS DateTime), N'Kan tahlilleri düzenli takip edilecek.')
+SET IDENTITY_INSERT [dbo].[MedicalRecords] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Patients] ON 
+
+INSERT [dbo].[Patients] ([PatientID], [FirstName], [LastName], [DateOfBirth], [Gender], [Phone], [Address], [BloodType]) VALUES (1, N'Zeynep', N'Kaya', CAST(N'1985-06-12' AS Date), N'Kadın', N'05551234567', N'İstanbul', N'A+')
+INSERT [dbo].[Patients] ([PatientID], [FirstName], [LastName], [DateOfBirth], [Gender], [Phone], [Address], [BloodType]) VALUES (2, N'Gaye', N'Demir', CAST(N'1990-09-25' AS Date), N'Kadın', N'05559876543', N'Ankara', N'B+')
+INSERT [dbo].[Patients] ([PatientID], [FirstName], [LastName], [DateOfBirth], [Gender], [Phone], [Address], [BloodType]) VALUES (3, N'Nazmi', N'Alkan', CAST(N'1972-09-02' AS Date), N'Erkek', N'05559876565', N'İzmir', N'AB+')
+INSERT [dbo].[Patients] ([PatientID], [FirstName], [LastName], [DateOfBirth], [Gender], [Phone], [Address], [BloodType]) VALUES (5, N'Aylin', N'Gezgin', CAST(N'1981-01-14' AS Date), N'Kadın', N'05623456767', N'İzmir', N'A+')
+INSERT [dbo].[Patients] ([PatientID], [FirstName], [LastName], [DateOfBirth], [Gender], [Phone], [Address], [BloodType]) VALUES (6, N'Mete', N'Oytun', CAST(N'1999-07-09' AS Date), N'Erkek', N'05667664545', N'', N'B+')
+SET IDENTITY_INSERT [dbo].[Patients] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Prescriptions] ON 
+
+INSERT [dbo].[Prescriptions] ([PrescriptionID], [PatientID], [DoctorID], [MedicineName], [Dosage], [Frequency], [StartDate], [EndDate]) VALUES (1, 1, 1, N'Parol', N'500mg', N'Günde 2 kez', CAST(N'2024-02-12' AS Date), CAST(N'2024-02-17' AS Date))
+INSERT [dbo].[Prescriptions] ([PrescriptionID], [PatientID], [DoctorID], [MedicineName], [Dosage], [Frequency], [StartDate], [EndDate]) VALUES (2, 1, 1, N'Dicloron', N'1000mg', N'Günde 1 kez', CAST(N'2024-02-10' AS Date), CAST(N'2025-04-10' AS Date))
+INSERT [dbo].[Prescriptions] ([PrescriptionID], [PatientID], [DoctorID], [MedicineName], [Dosage], [Frequency], [StartDate], [EndDate]) VALUES (3, 2, 2, N'lansor', N'30mg', N'Günde 2 kez', CAST(N'2024-05-11' AS Date), CAST(N'2025-05-11' AS Date))
+INSERT [dbo].[Prescriptions] ([PrescriptionID], [PatientID], [DoctorID], [MedicineName], [Dosage], [Frequency], [StartDate], [EndDate]) VALUES (4, 2, 2, N'Glifor', N'1000mg', N'Günde 2 kez', CAST(N'2024-01-03' AS Date), CAST(N'2026-07-01' AS Date))
+INSERT [dbo].[Prescriptions] ([PrescriptionID], [PatientID], [DoctorID], [MedicineName], [Dosage], [Frequency], [StartDate], [EndDate]) VALUES (5, 2, 2, N'Ferritin', N'200mg', N'Günde 1 kez', CAST(N'2024-06-04' AS Date), CAST(N'2025-01-04' AS Date))
+SET IDENTITY_INSERT [dbo].[Prescriptions] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Rooms] ON 
+
+INSERT [dbo].[Rooms] ([RoomID], [RoomNumber], [Type], [Status]) VALUES (1, 101, N'Muayene', N'Boş')
+INSERT [dbo].[Rooms] ([RoomID], [RoomNumber], [Type], [Status]) VALUES (2, 102, N'Muayene', N'Dolu')
+SET IDENTITY_INSERT [dbo].[Rooms] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Staff] ON 
+
+INSERT [dbo].[Staff] ([StaffID], [FirstName], [LastName], [Role], [Phone], [Email]) VALUES (1, N'Mehmet', N'Şahin', N'Hemşire', N'05331234141', N'mehmet.sahin@hastane.com')
+INSERT [dbo].[Staff] ([StaffID], [FirstName], [LastName], [Role], [Phone], [Email]) VALUES (2, N'Hümeyra', N'Demir', N'Laborant', N'05443556767', N'humeyra.demir@hastane.com')
+INSERT [dbo].[Staff] ([StaffID], [FirstName], [LastName], [Role], [Phone], [Email]) VALUES (3, N'Merve', N'Öz', N'Sekreter', N'05337654343', N'merve.oz@hastane.com')
+SET IDENTITY_INSERT [dbo].[Staff] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Tests] ON 
+
+INSERT [dbo].[Tests] ([TestID], [PatientID], [DoctorID], [StaffID], [TestType], [TestDate], [Results], [Status]) VALUES (1, 2, 2, 1, N'Kan Testi', CAST(N'2024-02-10T09:30:00.000' AS DateTime), N'Negatif', N'Tamamlandı')
+INSERT [dbo].[Tests] ([TestID], [PatientID], [DoctorID], [StaffID], [TestType], [TestDate], [Results], [Status]) VALUES (2, 2, 2, 1, N'Kan Testi', CAST(N'2024-02-11T10:30:00.000' AS DateTime), N'Pozitif', N'Tamamlandı')
+SET IDENTITY_INSERT [dbo].[Tests] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Doctors__5C7E359E20EACEE1]    Script Date: 11/02/2025 10:24:30 pm ******/
+ALTER TABLE [dbo].[Doctors] ADD UNIQUE NONCLUSTERED 
+(
+	[Phone] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Doctors__A9D105346AFDABFD]    Script Date: 11/02/2025 10:24:30 pm ******/
+ALTER TABLE [dbo].[Doctors] ADD UNIQUE NONCLUSTERED 
+(
+	[Email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Patients__5C7E359E57B36144]    Script Date: 11/02/2025 10:24:30 pm ******/
+ALTER TABLE [dbo].[Patients] ADD UNIQUE NONCLUSTERED 
+(
+	[Phone] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [UQ__Rooms__AE10E07A2F1D5D4F]    Script Date: 11/02/2025 10:24:30 pm ******/
+ALTER TABLE [dbo].[Rooms] ADD UNIQUE NONCLUSTERED 
+(
+	[RoomNumber] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Staff__5C7E359EAF818D88]    Script Date: 11/02/2025 10:24:30 pm ******/
+ALTER TABLE [dbo].[Staff] ADD UNIQUE NONCLUSTERED 
+(
+	[Phone] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Staff__A9D1053451EE2D46]    Script Date: 11/02/2025 10:24:30 pm ******/
+ALTER TABLE [dbo].[Staff] ADD UNIQUE NONCLUSTERED 
+(
+	[Email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Appointments]  WITH CHECK ADD FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctors] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Appointments]  WITH CHECK ADD FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patients] ([PatientID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Appointments]  WITH CHECK ADD FOREIGN KEY([RoomID])
+REFERENCES [dbo].[Rooms] ([RoomID])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[Appointments]  WITH CHECK ADD FOREIGN KEY([StaffID])
+REFERENCES [dbo].[Staff] ([StaffID])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[MedicalRecords]  WITH CHECK ADD FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctors] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[MedicalRecords]  WITH CHECK ADD FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patients] ([PatientID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[MedicalRecords]  WITH CHECK ADD FOREIGN KEY([StaffID])
+REFERENCES [dbo].[Staff] ([StaffID])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[Prescriptions]  WITH CHECK ADD FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctors] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Prescriptions]  WITH CHECK ADD FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patients] ([PatientID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Tests]  WITH CHECK ADD FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctors] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Tests]  WITH CHECK ADD FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patients] ([PatientID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Tests]  WITH CHECK ADD FOREIGN KEY([StaffID])
+REFERENCES [dbo].[Staff] ([StaffID])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[Appointments]  WITH CHECK ADD CHECK  (([Status]='İptal Edildi' OR [Status]='Tamamlandı' OR [Status]='Beklemede'))
+GO
+ALTER TABLE [dbo].[Rooms]  WITH CHECK ADD CHECK  (([Status]='Temizlikte' OR [Status]='Dolu' OR [Status]='Boş'))
+GO
+ALTER TABLE [dbo].[Tests]  WITH CHECK ADD CHECK  (([Status]='Tamamlandı' OR [Status]='Bekliyor'))
+GO
+USE [master]
+GO
+ALTER DATABASE [hastaneveritabani] SET  READ_WRITE 
+GO
